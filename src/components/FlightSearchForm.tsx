@@ -91,7 +91,7 @@ const FlightSearchForm = observer(() => {
             maxHeight: "3.4rem",
           }}
         >
-          {flightsStore.loading ? "Searching..." : "Search"}
+          Search
         </Button>
       </Box>
     </form>
