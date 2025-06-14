@@ -22,6 +22,7 @@ export const TableHeader = styled.th`
   text-align: left;
   font-weight: 600;
   border: 1px solid #e0e0e0;
+  cursor: grab;
 `;
 
 export const TableCell = styled.td<{ isEdited?: boolean }>`
