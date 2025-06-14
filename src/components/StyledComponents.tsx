@@ -44,7 +44,8 @@ export const SaveButton = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-inline: 20px;
+  min-width: 11rem;
+  font-size: 1rem;
   &:disabled {
     background: #d3d3d3;
   }

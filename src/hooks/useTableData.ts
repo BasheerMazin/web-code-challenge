@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { TableData } from "../types/tableTypes";
 import debounce from "lodash/debounce";
-import { flightsStore } from "../stores/flightsStore";
+import { flightsStore } from "../stores/flights.store";
 import { fetchFlights, fetchToken } from "../services/flights.service";
 
 export const useTableData = () => {
@@ -13,11 +13,14 @@ export const useTableData = () => {
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
+        flightsStore.setLoading(true);
         const token = await fetchToken();
         const result = await fetchFlights(token, "MAD");
         flightsStore.setFlights(result.data);
       } catch (error) {
         flightsStore.setError("Failed to fetch initial flights");
+      } finally {
+        flightsStore.setLoading(false);
       }
     };
 

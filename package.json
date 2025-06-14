@@ -1,7 +1,7 @@
 {
-  "name": "react-typescript",
+  "name": "almosafer-flights",
   "version": "1.0.0",
-  "description": "React and TypeScript example starter project",
+  "description": "Almosafer Flights Admin Portal",
   "keywords": [
     "typescript",
     "react",

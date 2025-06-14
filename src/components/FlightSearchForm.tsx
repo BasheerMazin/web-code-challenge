@@ -1,13 +1,12 @@
-import React from "react";
+import { observer } from "mobx-react-lite";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { TextField, Button, Box, Paper } from "@mui/material";
+import { TextField, Button, Box } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
-import { observer } from "mobx-react-lite";
-import { flightsStore } from "../stores/flightsStore";
+import { flightsStore } from "../stores/flights.store";
 
 interface FormValues {
   origin: string;
@@ -19,7 +18,7 @@ const validationSchema = Yup.object({
   departureDate: Yup.date().nullable(),
 });
 
-const FlightSearchForm: React.FC = observer(() => {
+const FlightSearchForm = observer(() => {
   const formik = useFormik<FormValues>({
     initialValues: {
       origin: "",
@@ -85,7 +84,7 @@ const FlightSearchForm: React.FC = observer(() => {
           variant="contained"
           type="submit"
           disabled={flightsStore.loading}
-          sx={{ minWidth: "120px" }}
+          sx={{ textTransform: "none", fontSize: "1.1rem", minWidth: "10rem" }}
         >
           {flightsStore.loading ? "Searching..." : "Search"}
         </Button>

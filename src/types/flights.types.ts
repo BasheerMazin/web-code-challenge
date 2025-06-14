@@ -6,7 +6,6 @@ export interface Flight {
     total: string;
   };
   returnDate: string;
-  type: string;
 }
 
 export interface FlightsResponse {

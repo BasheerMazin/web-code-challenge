@@ -19,7 +19,6 @@ class FlightsStore {
       price: flight.price,
       departureDate: flight.departureDate,
       returnDate: flight.returnDate,
-      type: flight.type,
     }));
   }
 
@@ -36,6 +35,7 @@ class FlightsStore {
     this.setError(null);
 
     try {
+      this.setLoading(true);
       const token = await fetchToken();
       const response = await fetchFlights(token, origin, departureDate);
       this.setFlights(response.data);

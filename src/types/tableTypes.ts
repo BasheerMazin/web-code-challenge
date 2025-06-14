@@ -6,5 +6,4 @@ export interface TableData {
     total: string;
   };
   returnDate: string;
-  type: string;
 }
