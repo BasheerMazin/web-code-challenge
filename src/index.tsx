@@ -8,17 +8,20 @@ import { CssBaseline } from "@mui/material";
 
 import App from "./App";
 import theme from "./theme";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const rootElement = document.getElementById("root")!;
 const root = ReactDOM.createRoot(rootElement);
 
 root.render(
   <React.StrictMode>
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <App />
-      </ThemeProvider>
-    </LocalizationProvider>
+    <ErrorBoundary>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <App />
+        </ThemeProvider>
+      </LocalizationProvider>
+    </ErrorBoundary>
   </React.StrictMode>
 );

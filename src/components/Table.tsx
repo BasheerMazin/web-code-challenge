@@ -61,6 +61,7 @@ const Table = ({
               <tr>
                 {columns.map((column) => (
                   <TableHeader key={column}>
+                    {formatHeader(column)}
                     <SearchInput
                       id={column}
                       placeholder={`Search ${formatHeader(column)}`}

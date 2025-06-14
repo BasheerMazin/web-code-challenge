@@ -7,6 +7,7 @@ import { Container } from "@mui/material";
 
 export default function App() {
   const HomePage = lazy(() => import("./pages/Home"));
+  const NotFoundPage = lazy(() => import("./pages/NotFound"));
 
   return (
     <BrowserRouter>
@@ -15,6 +16,7 @@ export default function App() {
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>
       </Container>

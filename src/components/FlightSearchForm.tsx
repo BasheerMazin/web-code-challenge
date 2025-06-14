@@ -84,7 +84,12 @@ const FlightSearchForm = observer(() => {
           variant="contained"
           type="submit"
           disabled={flightsStore.loading}
-          sx={{ textTransform: "none", fontSize: "1.1rem", minWidth: "10rem" }}
+          sx={{
+            textTransform: "none",
+            fontSize: "1.1rem",
+            minWidth: "10rem",
+            maxHeight: "3.4rem",
+          }}
         >
           {flightsStore.loading ? "Searching..." : "Search"}
         </Button>
