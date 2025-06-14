@@ -14,7 +14,7 @@ import { DateCell } from "../components/DateCell";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { flightsStore } from "../stores/flightsStore";
 import { useTableData } from "../hooks/useTableData";
-import { getDisplayValue } from "../utils/table";
+import { formatHeader, getDisplayValue } from "../utils/table";
 
 const Home: React.FC = observer(() => {
   const { editedCells, updateCell, saveChanges, debouncedFilter } =
@@ -27,9 +27,6 @@ const Home: React.FC = observer(() => {
   return (
     <>
       <FlightSearchForm />
-      <SaveButton onClick={saveChanges} disabled={editedCells.size === 0}>
-        Save Changes
-      </SaveButton>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <TableContainer>
           {loading ? (
@@ -40,9 +37,9 @@ const Home: React.FC = observer(() => {
                 <tr>
                   {columns.map((column) => (
                     <TableHeader key={column}>
-                      {column}
+                      {formatHeader(column)}
                       <SearchInput
-                        placeholder={`Search ${column}...`}
+                        placeholder={`Search ${formatHeader(column)}...`}
                         onChange={(e) =>
                           debouncedFilter(column, e.target.value)
                         }
@@ -88,6 +85,9 @@ const Home: React.FC = observer(() => {
           )}
         </TableContainer>
       </LocalizationProvider>
+      <SaveButton onClick={saveChanges} disabled={editedCells.size === 0}>
+        Save Changes
+      </SaveButton>
     </>
   );
 });

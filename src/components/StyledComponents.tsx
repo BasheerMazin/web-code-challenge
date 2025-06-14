@@ -1,4 +1,5 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
+import theme from "../theme";
 
 export const TableContainer = styled.div`
   padding: 20px;
@@ -20,32 +21,31 @@ export const TableHeader = styled.th`
   padding: 12px;
   text-align: left;
   font-weight: 600;
-  border-bottom: 2px solid #ddd;
+  border: 1px solid #e0e0e0;
 `;
 
 export const TableCell = styled.td<{ isEdited?: boolean }>`
   padding: 12px;
-  border-bottom: 1px solid #ddd;
-  background: ${({ isEdited }) => (isEdited ? '#fff9c4' : 'inherit')};
+  border: 1px solid #e0e0e0;
+  background: ${({ isEdited }) => (isEdited ? "#fff9c4" : "inherit")};
 `;
 
 export const SearchInput = styled.input`
   width: 100%;
   padding: 8px;
-  margin: 4px 0;
   border: 1px solid #ddd;
   border-radius: 4px;
 `;
 
 export const SaveButton = styled.button`
-  padding: 10px 20px;
-  background: #1976d2;
+  padding: 10px;
+  background: ${theme.palette.primary.main};
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin: 20px;
-  &:hover {
-    background: #1565c0;
+  margin-inline: 20px;
+  &:disabled {
+    background: #d3d3d3;
   }
 `;

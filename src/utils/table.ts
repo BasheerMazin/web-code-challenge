@@ -14,3 +14,12 @@ export const getDisplayValue = (row: TableData, column: string): string => {
   }
   return String(value);
 };
+
+export const formatHeader = (text: string) => {
+  return text
+    .replace(/_/g, " ")
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};

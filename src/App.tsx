@@ -11,7 +11,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Header />
-      <Container sx={{ py: 20 }}>
+      <Container sx={{ py: 13 }}>
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<HomePage />} />

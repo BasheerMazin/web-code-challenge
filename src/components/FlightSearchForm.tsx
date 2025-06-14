@@ -42,56 +42,55 @@ const FlightSearchForm: React.FC = observer(() => {
     typeof departureDateError === "string" ? departureDateError : "";
 
   return (
-    <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-      <form onSubmit={formik.handleSubmit}>
-        <Box
-          sx={{
-            display: "flex",
-            gap: 2,
-            flexDirection: { xs: "column", sm: "row" },
-          }}
-        >
-          <TextField
-            fullWidth
-            id="origin"
-            name="origin"
-            label="Origin City Code"
-            value={formik.values.origin}
-            onChange={formik.handleChange}
-            error={formik.touched.origin && Boolean(formik.errors.origin)}
-            helperText={formik.touched.origin && formik.errors.origin}
-            placeholder="e.g., MAD"
+    <form onSubmit={formik.handleSubmit}>
+      <Box
+        sx={{
+          px: "1.3rem",
+          display: "flex",
+          gap: 2,
+          flexDirection: { xs: "column", sm: "row" },
+        }}
+      >
+        <TextField
+          fullWidth
+          id="origin"
+          name="origin"
+          label="Origin City Code"
+          value={formik.values.origin}
+          onChange={formik.handleChange}
+          error={formik.touched.origin && Boolean(formik.errors.origin)}
+          helperText={formik.touched.origin && formik.errors.origin}
+          placeholder="e.g., MAD"
+        />
+
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Departure Date"
+            value={formik.values.departureDate}
+            onChange={(newValue) => {
+              formik.setFieldValue("departureDate", newValue);
+            }}
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                error: Boolean(departureDateError),
+                helperText: departureDateErrorMessage,
+              },
+            }}
           />
+        </LocalizationProvider>
 
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Departure Date"
-              value={formik.values.departureDate}
-              onChange={(newValue) => {
-                formik.setFieldValue("departureDate", newValue);
-              }}
-              slotProps={{
-                textField: {
-                  fullWidth: true,
-                  error: Boolean(departureDateError),
-                  helperText: departureDateErrorMessage,
-                },
-              }}
-            />
-          </LocalizationProvider>
-
-          <Button
-            color="primary"
-            variant="contained"
-            type="submit"
-            disabled={flightsStore.loading}
-            sx={{ minWidth: "120px" }}
-          >
-            {flightsStore.loading ? "Searching..." : "Search"}
-          </Button>
-        </Box>
-      </form>
-    </Paper>
+        <Button
+          color="primary"
+          variant="contained"
+          type="submit"
+          disabled={flightsStore.loading}
+          sx={{ minWidth: "120px" }}
+        >
+          {flightsStore.loading ? "Searching..." : "Search"}
+        </Button>
+      </Box>
+    </form>
   );
 });
 
