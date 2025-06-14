@@ -1,24 +1,26 @@
-import { useState, useEffect, useMemo } from 'react';
-import { TableData } from '../types/tableTypes';
-import data from '../data.json';
-import debounce from 'lodash/debounce';
+import { useState, useEffect, useMemo } from "react";
+import { TableData } from "../types/tableTypes";
+import debounce from "lodash/debounce";
+import { fetchFlights, fetchToken } from "../services/flights.service";
 
 export const useTableData = () => {
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [editedCells, setEditedCells] = useState<Set<string>>(new Set());
-  const [columnFilters, setColumnFilters] = useState<Record<string, string>>({});
+  const [columnFilters, setColumnFilters] = useState<Record<string, string>>(
+    {}
+  );
 
   useEffect(() => {
-    const savedData = localStorage.getItem('tableData');
-    if (savedData) {
-      setTableData(JSON.parse(savedData));
-    } else {
-      setTableData(data as TableData[]);
-    }
+    const fetchFlightsData = async () => {
+      const token = await fetchToken();
+      const result = await fetchFlights(token, "MAD");
+      setTableData(result.data as TableData[]);
+    };
+    fetchFlightsData();
   }, []);
 
   const saveChanges = () => {
-    localStorage.setItem('tableData', JSON.stringify(tableData));
+    localStorage.setItem("tableData", JSON.stringify(tableData));
     setEditedCells(new Set());
   };
 
@@ -46,9 +48,22 @@ export const useTableData = () => {
   const filteredData = useMemo(() => {
     return tableData.filter((row) => {
       return Object.entries(columnFilters).every(([column, filterValue]) => {
-        return row[column as keyof TableData]
-          .toLowerCase()
-          .includes(filterValue.toLowerCase());
+        const value = row[column as keyof TableData];
+
+        if (typeof value === "string") {
+          return value.toLowerCase().includes(filterValue.toLowerCase());
+        } else if (typeof value === "object" && value !== null) {
+          if ("total" in value) {
+            return value.total
+              .toLowerCase()
+              .includes(filterValue.toLowerCase());
+          }
+          return JSON.stringify(value)
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
+        }
+
+        return String(value).toLowerCase().includes(filterValue.toLowerCase());
       });
     });
   }, [tableData, columnFilters]);

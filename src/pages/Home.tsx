@@ -7,12 +7,12 @@ import {
   SearchInput,
   SaveButton,
 } from "../components/StyledComponents";
-import { TableData } from "../types/tableTypes";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCell } from "../components/DateCell";
+import { getDisplayValue } from "../utils/table";
 
-export default function App() {
+export default function Home() {
   const { data, editedCells, updateCell, saveChanges, debouncedFilter } =
     useTableData();
   const columns = Object.keys(data[0] || {});
@@ -46,14 +46,14 @@ export default function App() {
                   >
                     {dateCells.includes(column) ? (
                       <DateCell
-                        value={row[column as keyof TableData]}
+                        value={getDisplayValue(row, column)}
                         onChange={(value) =>
                           updateCell(rowIndex, column, value)
                         }
                       />
                     ) : (
                       <input
-                        value={row[column as keyof TableData]}
+                        value={getDisplayValue(row, column)}
                         onChange={(e) =>
                           updateCell(rowIndex, column, e.target.value)
                         }
