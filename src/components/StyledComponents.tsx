@@ -28,12 +28,14 @@ export const TableHeader = styled.th`
 
 export const TableCell = styled.td<{
   isEdited?: boolean;
+  isEmptied?: boolean;
   colSpan?: number;
   minWidth?: string | null;
 }>`
   padding: 12px;
   border: 1px solid #e0e0e0;
-  background: ${({ isEdited }) => (isEdited ? "#fff9c4" : "inherit")};
+  background: ${({ isEmptied, isEdited }) =>
+    isEmptied ? "#ffcccb" : isEdited ? "#fff9c4" : "inherit"};
   text-align: center;
   min-width: ${({ minWidth }) => minWidth || "auto"};
 `;
@@ -54,7 +56,20 @@ export const SaveButton = styled.button`
   cursor: pointer;
   min-width: 9rem;
   font-size: 1rem;
+  font-weight: 600;
   &:disabled {
     background: #d3d3d3;
+  }
+`;
+
+export const InputCell = styled.input`
+  border: none;
+  background: transparent;
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  outline: none;
+  &:focus {
+    outline: 1px solid #9e9e9e;
   }
 `;

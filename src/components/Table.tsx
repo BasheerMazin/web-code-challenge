@@ -13,6 +13,7 @@ import {
   TableCell,
   SearchInput,
   SaveButton,
+  InputCell,
 } from "./StyledComponents";
 import { DateCell } from "./DateCell";
 import {
@@ -41,7 +42,7 @@ const Table = ({
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [orderedColumns, setOrderedColumns] = useState<string[]>(
-    Object.keys(data[0] || {})
+    Object.keys(data[0] || {}).filter((key) => key !== "originalIndex")
   );
 
   const dateCells = ["departureDate", "returnDate"];
@@ -69,6 +70,10 @@ const Table = ({
     newColumns.splice(result.destination.index, 0, reorderedItem);
     setOrderedColumns(newColumns);
   };
+
+  const hasEmptyCell = data.some((row) =>
+    orderedColumns.some((col) => getDisplayValue(row, col).trim() === "")
+  );
 
   return (
     <>
@@ -129,41 +134,31 @@ const Table = ({
                     <tr key={rowIndex}>
                       {orderedColumns.map((column, columnIndex) => (
                         <TableCell
-                          key={`${rowIndex}-${column}`}
+                          key={`${row.originalIndex}-${column}`}
                           isEdited={editedCells.has(
-                            `${rowIndex + page * rowsPerPage}-${column}`
+                            `${row.originalIndex}-${column}`
                           )}
                           minWidth={cellMinWidthCalculator(column)}
+                          isEmptied={getDisplayValue(row, column).trim() === ""}
                         >
                           {dateCells.includes(column) ? (
                             <DateCell
                               value={getDisplayValue(row, column)}
                               onChange={(value) =>
-                                updateCell(
-                                  rowIndex + rowsPerPage * page,
-                                  column,
-                                  value
-                                )
+                                updateCell(row.originalIndex, column, value)
                               }
                             />
                           ) : (
-                            <input
+                            <InputCell
                               id={`${rowIndex}-${columnIndex}`}
                               value={getDisplayValue(row, column)}
                               onChange={(e) =>
                                 updateCell(
-                                  rowIndex + rowsPerPage * page,
+                                  row.originalIndex,
                                   column,
                                   e.target.value
                                 )
                               }
-                              style={{
-                                border: "none",
-                                background: "transparent",
-                                width: "100%",
-                                padding: "0.5rem",
-                                fontSize: "0.9rem",
-                              }}
                             />
                           )}
                         </TableCell>
@@ -182,8 +177,11 @@ const Table = ({
           flexDirection: { xs: "column", sm: "row" },
         }}
       >
-        <SaveButton onClick={saveChanges} disabled={editedCells.size === 0}>
-          Save Changes
+        <SaveButton
+          onClick={saveChanges}
+          disabled={editedCells.size === 0 || hasEmptyCell}
+        >
+          {hasEmptyCell ? "Fill All Cells" : "Save Changes"}
         </SaveButton>
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}

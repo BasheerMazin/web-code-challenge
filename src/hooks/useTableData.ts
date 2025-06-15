@@ -33,14 +33,18 @@ export const useTableData = () => {
     setEditedCells(new Set());
   };
 
-  const updateCell = (rowIndex: number, columnId: string, value: string) => {
+  const updateCell = (
+    originalIndex: number,
+    columnId: string,
+    value: string
+  ) => {
     const newData = [...flightsStore.flights];
-    newData[rowIndex] = {
-      ...newData[rowIndex],
+    newData[originalIndex] = {
+      ...newData[originalIndex],
       [columnId]: value,
     };
     flightsStore.setFlights(newData);
-    setEditedCells(new Set(editedCells).add(`${rowIndex}-${columnId}`));
+    setEditedCells((prev) => new Set(prev).add(`${originalIndex}-${columnId}`));
   };
 
   const debouncedFilter = useMemo(

@@ -17,12 +17,13 @@ class FlightsStore {
   }
 
   setFlights(flights: Flight[]) {
-    this.flights = flights.map((flight) => {
+    this.flights = flights.map((flight, index) => {
       const originLocation = this.dictionaries?.locations?.[flight.origin];
       const destinationLocation =
         this.dictionaries?.locations?.[flight.destination];
 
       return {
+        originalIndex: index,
         origin: originLocation
           ? `${flight.origin} - ${detailedNameFormatter(
               originLocation.detailedName

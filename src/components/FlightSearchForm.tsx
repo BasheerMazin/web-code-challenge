@@ -90,6 +90,7 @@ const FlightSearchForm = observer(() => {
             sx={{
               textTransform: "none",
               fontSize: "1.1rem",
+              fontWeight: 600,
               minWidth: "10rem",
               maxHeight: "3.4rem",
             }}
