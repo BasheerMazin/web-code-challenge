@@ -126,13 +126,19 @@ const Table = ({
                       {orderedColumns.map((column, columnIndex) => (
                         <TableCell
                           key={`${rowIndex}-${column}`}
-                          isEdited={editedCells.has(`${rowIndex}-${column}`)}
+                          isEdited={editedCells.has(
+                            `${rowIndex + page * rowsPerPage}-${column}`
+                          )}
                         >
                           {dateCells.includes(column) ? (
                             <DateCell
                               value={getDisplayValue(row, column)}
                               onChange={(value) =>
-                                updateCell(rowIndex, column, value)
+                                updateCell(
+                                  rowIndex + rowsPerPage * page,
+                                  column,
+                                  value
+                                )
                               }
                             />
                           ) : (
@@ -140,7 +146,11 @@ const Table = ({
                               id={`${rowIndex}-${columnIndex}`}
                               value={getDisplayValue(row, column)}
                               onChange={(e) =>
-                                updateCell(rowIndex, column, e.target.value)
+                                updateCell(
+                                  rowIndex + rowsPerPage * page,
+                                  column,
+                                  e.target.value
+                                )
                               }
                               style={{
                                 border: "none",
