@@ -1,7 +1,6 @@
 # Web Code Challenge — Flight Inspirations Admin Dashboard
 
-This project was built as part of a technical task to demonstrate frontend integration skills, API usage, UI/UX enhancements.  
-It is based on an existing codebase with editable table functionality using TanStack Table.
+This project was built as part of a technical task to demonstrate frontend integration skills, API usage, UI/UX enhancements. It is based on an existing codebase with editable table functionality using TanStack Table.
 
 While implementing the flight search feature, I discovered that the /search endpoint consistently returned a 404 Not Found error for most cities except MAD (Madrid). This issue is documented with screenshots for reference, showing it occurred during development. A fallback and an error-handling mechanism has been implemented, but a fully functional multi-city demo may depend on backend/API resolution.
 
@@ -14,9 +13,9 @@ To ensure a realistic and reviewable implementation, I chose not to fully refact
 - Column filtering
 - Editable table with cell-level editing and a save button to clear dirty state
 - Client-level caching
+- Client-side pagination
 - Drag-and-drop reordering of table columns
 - Responsive layout for desktop and mobile
-- Client-side pagination
 
 ## Running Locally
 
