@@ -51,11 +51,18 @@ npm start
 
 The app will be available at http://localhost:3000.
 
-## Performance metrics
+## Media
+
+### Demo Videos
+
+- [Application Walkthrough](https://drive.google.com/file/d/1NbsLHMjFGEbfDfPRSbkZFYgF2WIoGgjg/view?usp=sharing)
+- [Responsiveness](https://drive.google.com/file/d/1gAJ_7nsQFi1IzAOjTk-iQQRS1F-3KjyG/view?usp=sharing)
+
+### Performance metrics
 
 ![Lighthouse-results](./public/media/Lighthouse.png)
 
-## 404 API Error
+### 404 API Error
 
 ![404-postman](./public/media/404-postman.png)
 ![404-amadeus](./public/media/404-amadeus.png)
