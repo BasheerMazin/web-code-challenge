@@ -1,52 +1,62 @@
-# Web Code Challenge
-## Scenario
+# Web Code Challenge — Flight Inspirations Admin Dashboard
 
-We have a page in our system called *'Flight Inspirations'* where user can see suggestion for his upcoming travel.
-You need to ceate an admin dashboard to view and edit the 'Flight Inspirations'.
+This project was built as part of a technical task to demonstrate frontend integration skills, API usage, UI/UX enhancements.  
+It is based on an existing codebase with editable table functionality using TanStack Table.
 
-## What is already in the codebase:
-You have Tanstack table. Each table cell is editable and after updating any cell (or multiple cells) you will see the editted cells in highlighted color. 
-You are able to save the cells and the data in the table is persisted. This functionality should remain working.
-<img width="1576" alt="Screenshot 2025-02-13 at 2 57 33 PM" src="https://github.com/user-attachments/assets/e83cf53d-65e2-443b-a8af-1102c82bc720" />
+While implementing the flight search feature, I discovered that the /search endpoint consistently returned a 404 Not Found error for most cities except MAD (Madrid). This issue is documented with screenshots for reference, showing it occurred during development. A fallback and an error-handling mechanism has been implemented, but a fully functional multi-city demo may depend on backend/API resolution.
 
-## Assignment:
-I. Register on Amadeus Developer and get access to their free open-source APIs we will use in this challenge:
-Step-by-step guide to get the keys https://developers.amadeus.com/register
+To ensure a realistic and reviewable implementation, I chose not to fully refactor the existing codebase. Instead, I worked within the current structure, making localized improvements where necessary. This approach helps maintain continuity with the existing code and demonstrates how real-world tasks are often completed in incremental steps.
 
-II. Create a form with two inputs: one for the city code and another one for the date. Add a submit button or icon.
+## Features Implemented
 
-III. Using the values from the form do the API call to fetch Flight Inspirations 
-http://developers.amadeus.com/self-service/category/flights/api-doc/flight-inspiration-search/api-reference
+- API integration with Amadeus Flight Inspiration Search
+- Search form with inputs for origin city code and departure date
+- Column filtering
+- Editable table with cell-level editing and a save button to clear dirty state
+- Client-level caching
+- Drag-and-drop reordering of table columns
+- Responsive layout for desktop and mobile
+- Client-side pagination
 
+## Running Locally
 
-IV. Display the results of the call in the table you have in this codebase. Feel free to edit any code necessary, its just a blueprint. The only thing that you should pay attention is that cell edit/hightlight/save functionality is working.
+### 1. Clone the repository
 
-V. After data is displayed make sure its styled nicely. 
+```bash
+git clone https://github.com/BasheerMazin/web-code-challenge.git
+cd web-code-challenge
+```
 
-VI. Add drag and drop functionality to the columns of the table. (You should be able to switch position of the columns: eg. 5 -> 1, 1 -> 2, etc).
+### 2. Install dependencies
 
-VII. Add client side pagination.
+```bash
+npm install
+```
 
-VII. Optimize the state management of the app.
+### 3. Set up environment variables
 
+Create a `.env.local` file in the root of the project and add the following:
 
-## Conditions
-- You should think about the UI and UX of your app.
-- You should think about the state management of your app.
-- You should consume the api endpoint mentioned and not use it as internal json file.
-- You should build this application using Reactjs and Typescript.
+```env
+REACT_APP_API_KEY=your_amadeus_api_key
+REACT_APP_API_SECRET=your_amadeus_api_secret
+```
 
-## What we are looking for
+You can get your API credentials from https://developers.amadeus.com/register.
 
-- **Simple, clear, readable code** How well structured it is? Clear separation of concerns? Can anyone just look at it and get the idea to
-what is being done? Does it follow any standards?
-- **Correctness** Does the application do what it promises? Can we find bugs or trivial flaws?
-- **Memory efficiency** How will it behave in case of large datasets? Are results cached? Do you have debounce on your search?
-- **Testing** How well tested your application is? Can you give some metrics?
+### 4. Start the development server
 
+```bash
+npm start
+```
 
-## Questions & Delivery
+The app will be available at http://localhost:3000.
 
-If you have any questions to this challenge, please do reach out to us.
+## Performance metrics
 
-The challenge should be delivered as a link to a public git repository (github.com or bitbucket.com are preferred).
+![Lighthouse-results](./public/media/Lighthouse.png)
+
+## 404 API Error
+
+![404-postman](./public/media/404-postman.png)
+![404-amadeus](./public/media/404-amadeus.png)
