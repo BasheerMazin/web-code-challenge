@@ -14,7 +14,9 @@ interface FormValues {
 }
 
 const validationSchema = Yup.object({
-  origin: Yup.string().required("Origin city code is required"),
+  origin: Yup.string()
+    .length(3, "origin must be IATA code")
+    .required("Origin city code is required"),
   departureDate: Yup.date().nullable(),
 });
 
@@ -41,60 +43,67 @@ const FlightSearchForm = observer(() => {
     typeof departureDateError === "string" ? departureDateError : "";
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <Box
-        sx={{
-          px: "1.3rem",
-          display: "flex",
-          gap: 2,
-          flexDirection: { xs: "column", sm: "row" },
-        }}
-      >
-        <TextField
-          fullWidth
-          id="origin"
-          name="origin"
-          label="Origin City Code"
-          value={formik.values.origin}
-          onChange={formik.handleChange}
-          error={formik.touched.origin && Boolean(formik.errors.origin)}
-          helperText={formik.touched.origin && formik.errors.origin}
-          placeholder="e.g., MAD"
-        />
-
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            label="Departure Date"
-            value={formik.values.departureDate}
-            onChange={(newValue) => {
-              formik.setFieldValue("departureDate", newValue);
-            }}
-            slotProps={{
-              textField: {
-                fullWidth: true,
-                error: Boolean(departureDateError),
-                helperText: departureDateErrorMessage,
-              },
-            }}
-          />
-        </LocalizationProvider>
-
-        <Button
-          color="primary"
-          variant="contained"
-          type="submit"
-          disabled={flightsStore.loading}
+    <>
+      <form onSubmit={formik.handleSubmit}>
+        <Box
           sx={{
-            textTransform: "none",
-            fontSize: "1.1rem",
-            minWidth: "10rem",
-            maxHeight: "3.4rem",
+            px: "1.3rem",
+            display: "flex",
+            gap: 2,
+            flexDirection: { xs: "column", sm: "row" },
           }}
         >
-          Search
-        </Button>
-      </Box>
-    </form>
+          <TextField
+            fullWidth
+            id="origin"
+            name="origin"
+            label="Origin City Code"
+            value={formik.values.origin}
+            onChange={formik.handleChange}
+            error={formik.touched.origin && Boolean(formik.errors.origin)}
+            helperText={formik.touched.origin && formik.errors.origin}
+            placeholder="e.g., MAD"
+          />
+
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Departure Date"
+              value={formik.values.departureDate}
+              onChange={(newValue) => {
+                formik.setFieldValue("departureDate", newValue);
+              }}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                  error: Boolean(departureDateError),
+                  helperText: departureDateErrorMessage,
+                },
+              }}
+            />
+          </LocalizationProvider>
+
+          <Button
+            color="primary"
+            variant="contained"
+            type="submit"
+            disabled={flightsStore.loading}
+            sx={{
+              textTransform: "none",
+              fontSize: "1.1rem",
+              minWidth: "10rem",
+              maxHeight: "3.4rem",
+            }}
+          >
+            Search
+          </Button>
+        </Box>
+      </form>
+      {flightsStore.error && (
+        <Box sx={{ textAlign: "center", color: "red" }}>
+          <h4>{flightsStore.error}</h4>
+        </Box>
+      )}
+    </>
   );
 });
 

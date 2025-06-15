@@ -18,17 +18,18 @@ export const StyledTable = styled.table`
 
 export const TableHeader = styled.th`
   background: #f5f5f5;
-  padding: 12px;
+  padding: 12px 18px;
   text-align: left;
   font-weight: 600;
   border: 1px solid #e0e0e0;
   cursor: grab;
 `;
 
-export const TableCell = styled.td<{ isEdited?: boolean }>`
+export const TableCell = styled.td<{ isEdited?: boolean; colSpan?: number }>`
   padding: 12px;
   border: 1px solid #e0e0e0;
   background: ${({ isEdited }) => (isEdited ? "#fff9c4" : "inherit")};
+  text-align: center;
 `;
 
 export const SearchInput = styled.input`
@@ -45,7 +46,7 @@ export const SaveButton = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  min-width: 11rem;
+  min-width: 9rem;
   font-size: 1rem;
   &:disabled {
     background: #d3d3d3;

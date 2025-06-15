@@ -20,4 +20,5 @@ export interface FlightsResponse {
       [key: string]: string;
     };
   };
+  meta: { currency: string };
 }

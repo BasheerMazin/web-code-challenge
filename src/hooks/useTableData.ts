@@ -16,9 +16,11 @@ export const useTableData = () => {
         flightsStore.setLoading(true);
         const token = await fetchToken();
         const result = await fetchFlights(token, "MAD");
+        flightsStore.setDictionaries(result.dictionaries);
+        flightsStore.setMeta(result.meta);
         flightsStore.setFlights(result.data);
       } catch (error) {
-        flightsStore.setError("Failed to fetch initial flights");
+        flightsStore.setError("Failed to fetch flights");
       } finally {
         flightsStore.setLoading(false);
       }
@@ -28,7 +30,6 @@ export const useTableData = () => {
   }, []);
 
   const saveChanges = () => {
-    localStorage.setItem("tableData", JSON.stringify(flightsStore.flights));
     setEditedCells(new Set());
   };
 

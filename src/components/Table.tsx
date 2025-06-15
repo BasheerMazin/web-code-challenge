@@ -7,22 +7,21 @@ import {
   SaveButton,
 } from "./StyledComponents";
 import { DateCell } from "./DateCell";
-import LoadingSpinner from "./LoadingSpinner";
 import { formatHeader, getDisplayValue } from "../utils/table";
 import { Container, TablePagination } from "@mui/material";
 import { TableData } from "../types/tableTypes";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   DragDropContext,
   Droppable,
   Draggable,
   DropResult,
 } from "@hello-pangea/dnd";
+import { flightsStore } from "../stores/flights.store";
 
 interface TableProps {
   data: TableData[];
   editedCells: Set<string>;
-  loading: boolean;
   updateCell: (rowIndex: number, column: string, value: string) => void;
   saveChanges: () => void;
   debouncedFilter: (column: string, value: string) => void;
@@ -31,7 +30,6 @@ interface TableProps {
 const Table = ({
   data,
   editedCells,
-  loading,
   updateCell,
   saveChanges,
   debouncedFilter,
@@ -41,10 +39,6 @@ const Table = ({
   const [orderedColumns, setOrderedColumns] = useState<string[]>(
     Object.keys(data[0] || {})
   );
-
-  useEffect(() => {
-    setOrderedColumns(Object.keys(data[0] || {}));
-  }, [data]);
 
   const dateCells = ["departureDate", "returnDate"];
 
@@ -66,60 +60,66 @@ const Table = ({
     if (!result.destination) {
       return;
     }
-
-    const items = Array.from(orderedColumns);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
-
-    setOrderedColumns(items);
+    const newColumns = Array.from(orderedColumns);
+    const [reorderedItem] = newColumns.splice(result.source.index, 1);
+    newColumns.splice(result.destination.index, 0, reorderedItem);
+    setOrderedColumns(newColumns);
   };
 
   return (
     <>
       <TableContainer>
-        {loading ? (
-          <LoadingSpinner />
-        ) : (
-          <StyledTable>
-            <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="table-columns" direction="horizontal">
-                {(provided) => (
-                  <thead ref={provided.innerRef} {...provided.droppableProps}>
-                    <tr>
-                      {orderedColumns.map((column, index) => (
-                        <Draggable
-                          key={column}
-                          draggableId={column}
-                          index={index}
-                        >
-                          {(provided) => (
-                            <TableHeader
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              style={{
-                                ...provided.draggableProps.style,
+        <StyledTable>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="table-columns" direction="horizontal">
+              {(provided) => (
+                <thead ref={provided.innerRef} {...provided.droppableProps}>
+                  <tr>
+                    {orderedColumns.map((column, index) => (
+                      <Draggable
+                        key={column}
+                        draggableId={column}
+                        index={index}
+                      >
+                        {(provided) => (
+                          <TableHeader
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={{
+                              ...provided.draggableProps.style,
+                            }}
+                          >
+                            {formatHeader(column) +
+                              (column === "price"
+                                ? ` (${flightsStore.currency})`
+                                : "")}
+                            <SearchInput
+                              id={column}
+                              placeholder={`Search ${formatHeader(column)}`}
+                              onChange={(e) => {
+                                debouncedFilter(column, e.target.value);
+                                if (page) setPage(0);
                               }}
-                            >
-                              {formatHeader(column)}
-                              <SearchInput
-                                id={column}
-                                placeholder={`Search ${formatHeader(column)}`}
-                                onChange={(e) =>
-                                  debouncedFilter(column, e.target.value)
-                                }
-                              />
-                            </TableHeader>
-                          )}
-                        </Draggable>
-                      ))}
-                      {provided.placeholder}
-                    </tr>
-                  </thead>
-                )}
-              </Droppable>
-              <tbody>
-                {data
+                            />
+                          </TableHeader>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </tr>
+                </thead>
+              )}
+            </Droppable>
+            <tbody>
+              {data.length === 0 ? (
+                <tr>
+                  <TableCell colSpan={orderedColumns.length}>
+                    <h2>No results</h2>
+                  </TableCell>
+                </tr>
+              ) : (
+                data
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, rowIndex) => (
                     <tr key={rowIndex}>
@@ -146,36 +146,39 @@ const Table = ({
                                 border: "none",
                                 background: "transparent",
                                 width: "100%",
+                                padding: "0.5rem",
                               }}
                             />
                           )}
                         </TableCell>
                       ))}
                     </tr>
-                  ))}
-              </tbody>
-            </DragDropContext>
-          </StyledTable>
-        )}
+                  ))
+              )}
+            </tbody>
+          </DragDropContext>
+        </StyledTable>
       </TableContainer>
-      {!loading ? (
-        <Container sx={{ display: "flex", justifyContent: "space-between" }}>
-          <SaveButton onClick={saveChanges} disabled={editedCells.size === 0}>
-            Save Changes
-          </SaveButton>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={data.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Container>
-      ) : (
-        <></>
-      )}
+      <Container
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: { xs: "column", sm: "row" },
+        }}
+      >
+        <SaveButton onClick={saveChanges} disabled={editedCells.size === 0}>
+          Save Changes
+        </SaveButton>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={data.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Container>
     </>
   );
 };

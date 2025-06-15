@@ -23,3 +23,7 @@ export const formatHeader = (text: string) => {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 };
+
+export const detailedNameFormatter = (name: string): string => {
+  return name.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+};
