@@ -27,3 +27,18 @@ export const formatHeader = (text: string) => {
 export const detailedNameFormatter = (name: string): string => {
   return name.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
 };
+
+export const cellMinWidthCalculator = (column: string): string | null => {
+  switch (column) {
+    case "price":
+      return "8rem";
+    case "returnDate":
+    case "departureDate":
+      return "10rem";
+    case "origin":
+    case "destination":
+      return "15rem";
+    default:
+      return null;
+  }
+};

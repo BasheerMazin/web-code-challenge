@@ -1,3 +1,11 @@
+import { useState } from "react";
+import { Container, TablePagination } from "@mui/material";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "@hello-pangea/dnd";
 import {
   TableContainer,
   StyledTable,
@@ -7,16 +15,12 @@ import {
   SaveButton,
 } from "./StyledComponents";
 import { DateCell } from "./DateCell";
-import { formatHeader, getDisplayValue } from "../utils/table";
-import { Container, TablePagination } from "@mui/material";
-import { TableData } from "../types/tableTypes";
-import { useState } from "react";
 import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult,
-} from "@hello-pangea/dnd";
+  formatHeader,
+  getDisplayValue,
+  cellMinWidthCalculator,
+} from "../utils/table";
+import { TableData } from "../types/tableTypes";
 import { flightsStore } from "../stores/flights.store";
 
 interface TableProps {
@@ -129,6 +133,7 @@ const Table = ({
                           isEdited={editedCells.has(
                             `${rowIndex + page * rowsPerPage}-${column}`
                           )}
+                          minWidth={cellMinWidthCalculator(column)}
                         >
                           {dateCells.includes(column) ? (
                             <DateCell
@@ -157,6 +162,7 @@ const Table = ({
                                 background: "transparent",
                                 width: "100%",
                                 padding: "0.5rem",
+                                fontSize: "0.9rem",
                               }}
                             />
                           )}

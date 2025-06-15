@@ -13,6 +13,7 @@ export const StyledTable = styled.table`
   background: white;
   border-radius: 8px;
   overflow: hidden;
+  min-width: 50rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 `;
 
@@ -25,11 +26,16 @@ export const TableHeader = styled.th`
   cursor: grab;
 `;
 
-export const TableCell = styled.td<{ isEdited?: boolean; colSpan?: number }>`
+export const TableCell = styled.td<{
+  isEdited?: boolean;
+  colSpan?: number;
+  minWidth?: string | null;
+}>`
   padding: 12px;
   border: 1px solid #e0e0e0;
   background: ${({ isEdited }) => (isEdited ? "#fff9c4" : "inherit")};
   text-align: center;
+  min-width: ${({ minWidth }) => minWidth || "auto"};
 `;
 
 export const SearchInput = styled.input`
